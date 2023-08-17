@@ -36,18 +36,22 @@ class FlightSearch:
 
         parameters = {
             'fly_from':flight_parameters['fly_from'],
-            'date_from':flight_parameters['from_date'],
-            'date_to':flight_parameters['to_date'],
             'fly_to': flight_parameters['fly_to'],
+            'date_from':flight_parameters['start_period'],
+            'date_to':flight_parameters['to_date'],
             'curr':'CAD',
-            'price_from':0,
+            "nights_in_dst_from":7,
+            "nights_in_dst_to":28,
             'price_to':flight_parameters['min_price'],
-            'return_from':flight_parameters['from_date'],
-            'return_to':flight_parameters['to_date'],
-            'limit':1
+            "one_for_city":1,
+            'max_stopovers': flight_parameters['max_stopovers']
         }
 
         response = requests.get(url=url, headers=header, params=parameters)
+
+        if len(response.json()['data']) == 0:
+            parameters['max_stopovers'] = 2
+            response = requests.get(url=url, headers=header, params=parameters)
 
         return response.json()['data']
 

@@ -18,7 +18,16 @@ class DataManager:
 
         return response.json()['prices']
 
-    def updateFileData(self, flight):
+    def getEmailListData(self, sheetEndpoint, bearer_token):
+
+            header = {
+                'Authorization':'Bearer ' + bearer_token
+            }
+            response = requests.get(url=sheetEndpoint, headers=header)
+
+            return response.json()['sheet1']
+
+    def updateFileData(self, flight) :
 
         url = self.endpoint + f'/{id}'
         print(url)
